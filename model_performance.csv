@@ -1,0 +1,4 @@
+Model,CV_Accuracy,Test_Accuracy
+Random Forest,0.606 ± 0.058,0.675
+Gradient Boosting,0.481 ± 0.025,0.450
+Logistic Regression,0.525 ± 0.075,0.575
