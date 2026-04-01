@@ -1,72 +1,76 @@
-# Cancer Genomics Analysis in Python
+# Cancer Genomics Analysis in Python — Real Data
 
 ## Overview
-An end-to-end cancer genomics analysis pipeline in Python covering exploratory data analysis, dimensionality reduction, machine learning for cancer subtype classification, survival analysis, and drug response prediction. This project demonstrates core data science skills — NumPy, pandas, scikit-learn, matplotlib, seaborn, and lifelines — applied to a clinically relevant genomics dataset.
+An end-to-end cancer data science pipeline in Python using real public datasets. Covers exploratory data analysis, dimensionality reduction, machine learning classification, survival analysis, and biomarker discovery — demonstrating core Python data science skills applied to real clinical and genomic data.
+
+## Datasets Used
+
+### Wisconsin Breast Cancer Diagnostic Dataset (scikit-learn built-in)
+- **Source:** UCI Machine Learning Repository via scikit-learn
+- **Samples:** 569 real patient biopsies
+- **Features:** 30 quantitative features from cell nucleus images
+- **Target:** Binary diagnosis — Malignant vs Benign
+
+### Rossi Recidivism Study (lifelines)
+- **Source:** Rossi et al. (1980) — real longitudinal follow-up study
+- **Samples:** 432 individuals followed for up to 52 weeks post-release
+- **Purpose:** Demonstrates survival analysis methods on real longitudinal data
 
 ## Why This Matters
-Python is the dominant language for data science and machine learning. In cancer genomics and drug development, Python is widely used for:
+Python is the dominant language for data science and machine learning. This project demonstrates core Python skills directly applicable to data scientist roles:
 
-- **ML pipelines** — scikit-learn, XGBoost, and PyTorch power predictive models for patient stratification and drug response prediction
-- **Genomics data processing** — large-scale expression and mutation datasets require efficient NumPy/pandas operations
-- **Survival analysis** — the lifelines library is the standard Python tool for Kaplan-Meier and Cox regression in clinical research
-- **Reproducible research** — Python pipelines integrate naturally with cloud workflows, Docker, and CI/CD systems
-- **Visualization** — matplotlib and seaborn produce publication-quality figures for scientific communication
+- **scikit-learn pipelines** — the industry standard for ML in Python
+- **Survival analysis** — lifelines is the standard Python tool for clinical research
+- **Data wrangling** — pandas and numpy for real dataset manipulation
+- **Visualisation** — matplotlib and seaborn for publication-quality figures
 
 ## Analysis Pipeline
 
 ### 1. Exploratory Data Analysis
-- Sample distribution across cancer types
-- Age at diagnosis by cancer type
-- Tumor stage distribution
-- Driver gene mutation frequencies
-- Gene expression distributions
-- Survival distributions by stage
+- Patient diagnosis distribution, feature distributions by class
+- Feature correlation heatmap, discriminating feature boxplots
+- Feature space scatter plots
 
-### 2. Dimensionality Reduction and Clustering
-- PCA variance explained analysis
-- PCA scatter plot — cancer type separation
-- t-SNE visualization of gene expression clusters
+### 2. Dimensionality Reduction
+- PCA scree plot — PC1 explains 44.3% variance
+- PCA scatter — clear malignant/benign separation
+- t-SNE visualisation of cluster structure
 
-### 3. Machine Learning — Cancer Subtype Classification
-- Feature selection: top 100 variable genes
+### 3. Machine Learning Classification
 - Three models: Random Forest, Gradient Boosting, Logistic Regression
 - 5-fold stratified cross-validation
-- Confusion matrix and classification report
+- ROC curves for all models
+- Best model: Logistic Regression (AUC = 0.995, Accuracy = 98.2%)
 - Feature importance analysis
 
 ### 4. Survival Analysis
-- Kaplan-Meier curves by cancer type
-- Kaplan-Meier curves by tumor stage
-- Cox Proportional Hazards regression with hazard ratio plot
+- Kaplan-Meier curves — overall cohort and by risk group
+- Log-rank test: p = 0.0013 (significant difference by prior arrest history)
+- Cox Proportional Hazards regression with hazard ratio forest plot
 
-### 5. Mutation Landscape and Drug Response
-- Driver gene co-mutation correlation heatmap
-- Mutation burden by cancer type and stage
-- EGFR mutation vs EGFR inhibitor response (Wilcoxon test)
-- Mutation burden vs overall survival correlation
+### 5. Biomarker Discovery
+- Wilcoxon rank-sum test for top discriminating features
+- Violin plots with significance labels (p < 1e-76)
+- All top biomarkers highly significant: worst perimeter, worst area, worst concave points
 
 ## Results
-
-| Model | CV Accuracy | Test Accuracy |
-|---|---|---|
-| Random Forest | ~0.92 ± 0.04 | ~0.93 |
-| Gradient Boosting | ~0.90 ± 0.05 | ~0.90 |
-| Logistic Regression | ~0.85 ± 0.05 | ~0.85 |
-
-- EGFR-mutant tumors show significantly lower EGFR inhibitor IC50 (p < 0.001) — confirming predictive biomarker value
-- t-SNE reveals clear separation of cancer subtypes in gene expression space
-- Higher mutation burden is associated with reduced overall survival
+| Model | CV AUC | Test AUC | Test Accuracy |
+|---|---|---|---|
+| Logistic Regression | 0.996 | 0.995 | 98.2% |
+| Random Forest | 0.993 | 0.993 | 97.4% |
+| Gradient Boosting | 0.989 | 0.989 | 96.5% |
 
 ## Outputs
 | File | Description |
 |---|---|
-| `01_exploratory_analysis.png` | EDA dashboard — demographics, mutations, expression |
-| `02_dimensionality_reduction.png` | PCA and t-SNE visualizations |
-| `03_classification_results.png` | ML model comparison, confusion matrix, feature importance |
-| `04_survival_analysis.png` | KM curves and Cox regression |
-| `05_mutation_drug_analysis.png` | Mutation landscape and drug response |
+| `01_exploratory_analysis.png` | EDA dashboard — 6 panel figure |
+| `02_dimensionality_reduction.png` | PCA scree plot, PCA scatter, t-SNE |
+| `03_classification_results.png` | Model comparison, ROC curves, feature importance |
+| `04_survival_analysis.png` | KM curves and Cox regression forest plot |
+| `05_biomarker_analysis.png` | Top biomarker violin plots with p-values |
 | `model_performance.csv` | Model performance summary |
-| `clinical_data.csv` | Simulated clinical dataset |
+| `feature_importance.csv` | Random Forest feature importances |
+| `breast_cancer_data.csv` | Full Wisconsin dataset with diagnosis labels |
 
 ## How to Run
 
@@ -75,26 +79,15 @@ Python is the dominant language for data science and machine learning. In cancer
 pip install numpy pandas matplotlib seaborn scikit-learn lifelines scipy
 ```
 
-Or with conda:
-```bash
-conda install numpy pandas matplotlib seaborn scikit-learn scipy
-pip install lifelines
-```
-
 ### Step 2 — Run analysis
 ```bash
 python cancer_genomics_analysis.py
 ```
 
-## Requirements
-- Python >= 3.8
-- numpy, pandas, matplotlib, seaborn
-- scikit-learn
-- lifelines
-- scipy
+No data downloads needed — both datasets load automatically from scikit-learn and the web.
 
 ## Technical Stack
-- **Data manipulation:** NumPy, pandas
+- **Data:** scikit-learn (Wisconsin BC), lifelines/GitHub (Rossi survival)
 - **Machine learning:** scikit-learn (Random Forest, Gradient Boosting, Logistic Regression, PCA, t-SNE)
 - **Survival analysis:** lifelines (KaplanMeierFitter, CoxPHFitter)
 - **Visualisation:** matplotlib, seaborn
